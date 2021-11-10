@@ -29,5 +29,6 @@ Route::get('/', function () {
 // Route::get('/', [PenggunaController::class, 'index']);
 
 Route::get('/pengguna_air', [PenggunaController::class, 'index']);
+Route::get('/pengguna_air', [PenggunaController::class, 'index'])->name('insert');
 Route::get('/tarif_air', [TarifAirController::class, 'index']);
 Route::post('/add_pengguna', [PenggunaController::class, 'addDataPengguna']);

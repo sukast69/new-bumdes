@@ -27,12 +27,27 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+
+        @if (Session::has('pesan'))
+            <script>
+                swal("Good job!", "{Session::get('pesan') !!}", {
+                    icon: "success",
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    },
+                });
+            </script>
+
+        @endif
+
+
+
         <form action="/add_pengguna" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal fade mt-5" id="exampleModalLong" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -49,7 +64,7 @@
                                     </span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Nama" name="nama_lengkap"
-                                    @error('nama') is-invalid @enderror>
+                                    value="{{ old('nama_lengkap') }}">
                             </div>
                             <div class=" has-error text-danger">
                                 @error('nama_lengkap')
@@ -64,8 +79,8 @@
                                         <i class="fas fa-users"></i>
                                     </span>
                                 </div>
-                                <input type="number" class="form-control" placeholder="NIK" name="nik" @error('nik')
-                                    is-invalid @enderror>
+                                <input type="number" class="form-control" placeholder="Nik" name="nik"
+                                    value="{{ old('nik') }}">
                             </div>
                             <div class=" has-error text-danger">
                                 @error('nik')
@@ -73,6 +88,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="modal-body">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -81,7 +97,7 @@
                                     </span>
                                 </div>
                                 <input type="number" class="form-control" placeholder="Nomer WhatsApp" name="nomer_hp"
-                                    @error('nomer_hp') is-invalid @enderror>
+                                    value="{{ old('nomer_hp') }}">
                             </div>
                             <div class=" has-error text-danger">
                                 @error('nomer_hp')
@@ -96,14 +112,13 @@
                                         <i class="fas fa-venus-mars"></i>
                                     </span>
                                 </div>
-                                <div>
-                                    <select id="" class="form-control" name="jenis_kelamin" @error('jenis_kelamin')
-                                        is-invalid @enderror>
-                                        <option value="" disabled selected hidden>Jenis Kelamin</option>
-                                        <option value="0">Perempuan</option>
-                                        <option value="1">Laki-Laki</option>
-                                    </select>
-                                </div>
+
+                                <select id="jenis_kelamin" class="form-control" name="jenis_kelamin"
+                                    value="{{ old('jenis_kelamin') }}">
+                                    <option value="" disabled selected>Jenis Kelamin</option>
+                                    <option value="0">Perempuan</option>
+                                    <option value="1">Laki-Laki</option>
+                                </select>
                             </div>
                             <div class=" has-error text-danger">
                                 @error('jenis_kelamin')
@@ -119,7 +134,7 @@
                                     </span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Alamat" name="alamat_pengguna"
-                                    @error('alamat_pengguna') is-invalid @enderror>
+                                    value="{{ old('alamat_pengguna') }}">
                             </div>
                             <div class=" has-error text-danger">
                                 @error('alamat_pengguna')
@@ -134,23 +149,23 @@
                                         <i class="fas fa-power-off"></i>
                                     </span>
                                 </div>
-                                <div>
-                                    <select name="" id="" class="form-control" name="status_pengguna"
-                                        @error('status_pengguna') is-invalid @enderror>
-                                        <option value="" disabled selected hidden>Status Pengguna</option>
-                                        <option value="0">Tidak Aktif</option>
-                                        <option value="1">Aktif</option>
-                                    </select>
-                                </div>
-                                <div class=" has-error text-danger">
-                                    @error('status_pengguna')
-                                        {{ $message }}
-                                    @enderror
-                                </div>
+                                <select id="status_pengguna" class="form-control" name="status_pengguna"
+                                    value="{{ old('status_pengguna') }}">
+
+                                    <option value="" disabled selected>Status Pengguna</option>
+                                    <option value="0">Tidak Aktif</option>
+                                    <option value="1">Aktif</option>
+                                </select>
+
+                            </div>
+                            <div class=" has-error text-danger">
+                                @error('status_pengguna')
+                                    {{ $message }}
+                                @enderror
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -207,7 +222,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Id_Pengguna</th>
+                                        <th>Id Pengguna</th>
                                         <th>Nama Pengguna</th>
                                         <th>NIK</th>
                                         <th>Nomer WhatsApp</th>
@@ -219,29 +234,27 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        @foreach ($pengguna_air as $pa)
-                                            <td>1</td>
+                                    @php $no = 1; @endphp
+                                    @foreach ($pengguna_air as $pa)
+                                        <tr>
+
+                                            <td>{{ $no++ }}</td>
                                             <td>{{ $pa->id_pengguna }}</td>
                                             <td>{{ $pa->nama_lengkap }}</td>
                                             <td>{{ $pa->nik }}</td>
                                             <td>{{ $pa->nomer_hp }}</td>
 
                                             <?php if($pa->jenis_kelamin==0){ ?>
-                                            Perempuan</td>
+                                            <td> Perempuan</td>
                                             <?php }else{ ?>
                                             <td>Laki-Laki</td>
                                             <?php } ?>
-                                            </td>
 
                                             <?php if($pa->status_pengguna==0){ ?>
-                                            Tidak Aktif</td>
+                                            <td> Tidak Aktif</td>
                                             <?php }else{ ?>
                                             <td>Aktif</td>
                                             <?php } ?>
-                                            </td>
-
-
                                             <td>{{ $pa->alamat_pengguna }}</td>
                                             <td>
                                                 <a href="" class="btn btn-warning btn-xs">
@@ -251,8 +264,9 @@
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
-                                        @endforeach
-                                    </tr>
+
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

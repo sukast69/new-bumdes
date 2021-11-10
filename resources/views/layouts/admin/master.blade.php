@@ -396,7 +396,7 @@
         </div>
     </div>
 
-
+    @include('sweetalert::alert')
 
     </div>
     <!--   Core JS Files   -->
@@ -486,6 +486,50 @@
 
             });
         });
+    </script>
+
+    @if (count($errors) > 0)
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#exampleModalLong').modal('show');
+            });
+        </script>
+    @endif
+
+    <script>
+        //script untuk untuk edit modal
+        var myModal = document.getElementById('editModal')
+        console.log(editModal)
+        editModal.addEventListener('shown.bs.modal', function(event) {
+            console.log('modal opened')
+            var button = event.relatedTarget
+            var judulData = button.getAttribute('data-judul')
+            var catatanData = button.getAttribute('data-catatan')
+            var tanggal = button.getAttribute('data-tanggal')
+            var todoId = button.getAttribute('data-id')
+            const judulInput = document.getElementById('judulTodo')
+            const catatanInput = document.getElementById('catatanTodo')
+            const tagInput = document.getElementById('tags')
+            const tanggalInput = document.getElementById('tanggal')
+            const todoIdInput = document.getElementById('todoId')
+
+            judulInput.value = judulData
+            catatanInput.value = catatanData
+            tanggalInput.value = tanggal
+            todoIdInput.value = todoId
+        })
+        //script untuk deleteModal
+        var deleteModal = document.getElementById('deleteModal')
+
+        deleteModal.addEventListener('shown.bs.modal', function(event) {
+            console.log('modal opened')
+            var button = event.relatedTarget
+            var todoId = button.getAttribute('data-id')
+            const todoIdInput = document.getElementById('deleteTodoId')
+
+            todoIdInput.value = todoId
+            console.log(todoIdInput.value)
+        })
     </script>
 </body>
 
